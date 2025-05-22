@@ -1,0 +1,57 @@
+---
+import {navlinks, texts} from "../config"
+import {getLocaleByPath, pathHasLocale} from "astro:i18n"
+
+const path = Astro.url.pathname;
+const locale = pathHasLocale(path) ? getLocaleByPath(path) : "es";
+console.log("locale: ",locale)
+---
+
+<div class="navbar bg-primary shadow-sm px-2 relative">
+  {/* Móvil: dropdown a la izquierda, logo centrado */}
+  <div class="flex w-full items-center justify-center relative lg:hidden">
+    {/* Dropdown para móvil */}
+    <div class="flex items-center absolute left-0">
+      <input id="menu-toggle" type="checkbox" class="hidden peer" />
+      <label for="menu-toggle" class="btn btn-ghost p-2 cursor-pointer">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </label>
+      <ul class="menu menu-sm absolute left-0 top-12 bg-base-100 rounded-box shadow z-20 w-40 hidden peer-checked:block animate-fade-in">
+        {navlinks.map(l => (
+          <li><a href={l}>{texts[locale][l]}</a></li>
+        ))}
+      </ul>
+    </div>
+    {/* Logo centrado en móvil */}
+    <div class="flex-1 flex justify-center">
+      <img width="50" src="src/assets/images/xessence_logo_withletter_white_800.png" class="mx-auto" />
+    </div>
+  </div>
+  {/* Desktop: logo a la izquierda, links centrados */}
+  <div class="hidden lg:flex w-full items-center">
+    {/* Logo a la izquierda */}
+    <div class="flex-none">
+      <img width="50" src="src/assets/images/xessence_logo_withletter_white_800.png" />
+    </div>
+    {/* Links centrados */}
+    <div class="flex-1 flex justify-center">
+      <ul class="menu menu-horizontal px-1 h-7">
+        {navlinks.map(l => (
+          <li><a href={l}>{texts[locale][l]}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.animate-fade-in {
+  animation: fade-in 0.2s ease;
+}
+</style>
