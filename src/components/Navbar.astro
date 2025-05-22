@@ -2,8 +2,12 @@
 import {navlinks, texts} from "../config"
 import {getLocaleByPath, pathHasLocale} from "astro:i18n"
 
-const path = Astro.url.pathname;
-const locale = pathHasLocale(path) ? getLocaleByPath(path) : "es";
+const path = typeof Astro.url?.pathname === "string" ? Astro.url.pathname : "/";
+var locale = "es";
+if (path && pathHasLocale(path)) {
+    // locale = getLocaleByPath(path);
+}
+console.log("path: ",path)
 console.log("locale: ",locale)
 ---
 
